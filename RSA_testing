@@ -1,0 +1,61 @@
+import random
+import time
+import cryptomath
+
+def main():
+    # Набор тестов: (Длина модуля n в битах, длина простых чисел p и q в битах)
+    test_sizes = [(512, 256), (1024, 512), (2048, 1024), (4096, 2048)]
+    num_trials = 5  # Количество испытаний для каждого размера ключа
+
+    print(f"Запуск тестирования (по {num_trials} испытаний на каждый ключ)...")
+    print(f"{'Биты n':<10} | {'Шифр. сред. (с)':<18} | {'Расшифр. сред. (с)':<18} | {'Цикл сред. (с)':<15}")
+    print("-" * 75)
+
+    for n_bits, pq_bits in test_sizes:
+        total_enc_time = 0.0
+        total_dec_time = 0.0
+
+        # Генерируем ключи один раз для набора испытаний
+        p = cryptomath.generateLargePrime(pq_bits)
+        q = cryptomath.generateLargePrime(pq_bits)
+        while p == q:
+            q = cryptomath.generateLargePrime(pq_bits)
+
+        n = p * q
+        phi = (p - 1) * (q - 1)
+
+        # Открытая экспонента
+        e = 65537
+        d = cryptomath.findModInverse(e, phi)
+
+        for _ in range(num_trials):
+            # Сообщение x генерируем случайным образом
+            x = random.getrandbits(n_bits - 2)
+
+            # 1. Замер времени шифрования
+            start_enc = time.perf_counter()
+            c = pow(x, e, n)
+            end_enc = time.perf_counter()
+            total_enc_time += (end_enc - start_enc)
+
+            # 2. Замер времени расшифрования
+            start_dec = time.perf_counter()
+            m = pow(c, d, n)
+            end_dec = time.perf_counter()
+            total_dec_time += (end_dec - start_dec)
+
+            # Проверка корректности
+            if x != m:
+                print(f"Ошибка расшифрования на {n_bits} бит!")
+
+        # Вычисляем средние значения
+        avg_enc = total_enc_time / num_trials
+        avg_dec = total_dec_time / num_trials
+        avg_cycle = avg_enc + avg_dec
+
+        # Печать результатов
+        print(f"{n_bits:<10} | {avg_enc:<18.6f} | {avg_dec:<18.6f} | {avg_cycle:<15.6f}")
+
+
+if __name__ == '__main__':
+    main()
