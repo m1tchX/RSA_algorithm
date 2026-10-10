@@ -1,77 +1,86 @@
-# Программная реализация и тестирование алгоритма асимметричного шифрования RSA
+Description (for GitHub Repository Settings)
 
-Данный проект представляет собой курсовую работу, посвященную изучению, программной реализации и тестированию производительности алгоритма асимметричного шифрования **RSA** на языке Python.
+Python implementation, key generation, and performance benchmarking suite for the RSA asymmetric encryption algorithm (coursework project).
 
----
+Software Implementation and Testing of the RSA Asymmetric Encryption Algorithm
 
-## 📌 Особенности реализации
+This project is a coursework focused on the study, software implementation, and performance testing of the RSA asymmetric encryption algorithm in Python.
 
-- **Математический аппарат (`cryptomath.py`, `primeNum.py`):**
-  - Алгоритм Евклида для нахождения наибольшего общего делителя ($\text{НОД}$).
-  - Расширенный алгоритм Евклида для вычисления обратного элемента по модулю ($d \equiv e^{-1} \pmod{\phi(n)}$).
-  - Вероятностный тест Миллера-Рабина для проверки простых чисел высокой битности.
-  - Генерация случайных простых чисел заданной длины (до 2048 бит на число).
+📌 Implementation Features
 
-- **Выбор открытой экспоненты ($e = 65537$):**
-  - В тестовом модуле `RSA_testing.py` в качестве открытой экспоненты фиксировано используется $e = 65537$ ($2^{16} + 1$, четвертое число Ферма $F_4$).
-  - Это стандартное значение в промышленной криптографии (X.509, PKCS#1, TLS/SSL), которое обеспечивает стойкость к атакам Манассе и атакам на малые экспоненты, при этом позволяя оптимизировать операцию шифрования благодаря битовому представлению ($10000000000000001_2$ требует всего 17 операций в алгоритме бинарного возведения в степень).
-  
-- **Генерация ключей (`makePublicPrivateKeys.py`):**
-  - Автоматическая генерация пары ключей заданной битности ($n = p \cdot q$).
-  - Сохранение ключей в текстовые файлы (`*_pubkey.txt`, `*_privkey.txt`).
+Mathematical Core (cryptomath.py, primeNum.py):
 
-- **Консольная демонстрация (`RSA_simple.py`):**
-  - Простой интерактивный скрипт для наглядного шифрования и расшифрования пользовательских чисел $x$ при заданных $p$ и $q$.
+Euclidean algorithm for greatest common divisor ($\text{GCD}$).
 
-- **Бенчмаркинг и тестирование (`RSA_testing.py`):**
-  - Измерение времени шифрования, расшифрования и полного цикла для ключей различной длины: **512, 1024, 2048 и 4096 бит**.
+Extended Euclidean algorithm for modular multiplicative inverse ($d \equiv e^{-1} \pmod{\phi(n)}$).
 
----
+Probabilistic Miller-Rabin primality test for high-bit prime validation.
 
-## 📁 Структура проекта
+Generation of random prime numbers of specified bit length (up to 2048 bits per number).
 
-```text
+Public Exponent Selection ($e = 65537$):
+
+The test module RSA_testing.py fixes $e = 65537$ ($2^{16} + 1$, the fourth Fermat number $F_4$) as the public exponent.
+
+This is an industry standard in cryptography (X.509, PKCS#1, TLS/SSL) providing resilience against Manasse and low-exponent attacks, while optimizing encryption operations via binary exponentiation ($10000000000000001_2$ requires only 17 operations).
+
+Key Generation (makePublicPrivateKeys.py):
+
+Automated generation of a key pair for a given bit length ($n = p \cdot q$).
+
+Saving keys to text files (*_pubkey.txt, *_privkey.txt).
+
+Console Demonstration (RSA_simple.py):
+
+A simple interactive script for straightforward encryption and decryption of user numbers $x$ given $p$ and $q$.
+
+Benchmarking & Testing (RSA_testing.py):
+
+Measurement of encryption, decryption, and full-cycle execution times for various key lengths: 512, 1024, 2048, and 4096 bits.
+
+📁 Project Structure
+
 RSA_algorithm/
-├── cryptomath.py             # Основной модуль математических функций (НОД, mod inverse, Миллер-Рабин)
-├── primeNum.py               # Вспомогательный модуль генерации простых чисел
-├── makePublicPrivateKeys.py  # Генерация пар открытого и закрытого ключей с записью в файл
-├── RSA_simple.py             # Интерактивный демонстрационный скрипт
-├── RSA_testing.py            # Нагрузочное тестирование и замеры производительности
-├── .gitignore                # Исключения для Git
-└── README.md                 # Документация проекта
-```
+├── cryptomath.py            # Core mathematical functions (GCD, mod inverse, Miller-Rabin)
+├── primeNum.py              # Auxiliary prime number generation module
+├── makePublicPrivateKeys.py # Public/private key pair generation with file output
+├── RSA_simple.py            # Interactive demonstration script
+├── RSA_testing.py           # Load testing and performance benchmarking
+├── .gitignore               # Git ignore rules
+└── README.md                # Project documentation
 
----
 
-## 🚀 Запуск и использование
+🚀 Getting Started and Usage
 
-Для работы проекта требуется только интерпретатор **Python 3.x** (сторонние библиотеки не требуются).
+The project requires only a Python 3.x interpreter (no external libraries needed).
 
-### 1. Интерактивная демонстрация RSA
-Запустите скрипт для ручного ввода простых чисел и шифрования числа $x$:
-```bash
+1. Interactive RSA Demonstration
+
+Run the script for manual entry of prime numbers and encryption of number $x$:
+
 python RSA_simple.py
-```
 
-### 2. Генерация файлов ключей
-Скрипт сгенерирует ключи заданной битности и сохранит их в файлы `user_pubkey.txt` и `user_privkey.txt`:
-```bash
+
+2. Key File Generation
+
+The script will generate keys of the specified bit length and save them to user_pubkey.txt and user_privkey.txt:
+
 python makePublicPrivateKeys.py
-```
 
-### 3. Запуск бенчмарков производительности
-Скрипт выполнит серию тестов для модулей $n$ объемом 512, 1024, 2048 и 4096 бит и выведет среднее время шифрования/расшифрования:
-```bash
+
+3. Running Performance Benchmarks
+
+The script will run a series of tests for modulus $n$ sizes of 512, 1024, 2048, and 4096 bits and output average encryption/decryption times:
+
 python RSA_testing.py
-```
 
-Пример вывода тестов:
-```text
-Запуск тестирования (по 5 испытаний на каждый ключ)...
-Биты n     | Шифр. сред. (с)    | Расшифр. сред. (с) | Цикл сред. (с) 
+
+Example test output:
+
+Running tests (5 trials per key size)...
+n Bits     | Avg. Encrypt (s)   | Avg. Decrypt (s)   | Avg. Cycle (s) 
 ---------------------------------------------------------------------------
 512        | 0.000013           | 0.000455           | 0.000468       
 1024       | 0.000033           | 0.002306           | 0.002340       
 2048       | 0.000117           | 0.016834           | 0.016951       
-4096       | 0.000419           | 0.119010           | 0.119428          
-```
+4096       | 0.000419           | 0.119010           | 0.119428       
