@@ -39,3 +39,39 @@ RSA_algorithm/
 ├── RSA_testing.py           # Load testing and performance benchmarking
 ├── .gitignore               # Git ignore rules
 └── README.md                # Project documentation
+```
+
+---
+
+## 🚀 Getting Started and Usage
+
+The project requires only a **Python 3.x** interpreter (no external libraries needed).
+
+### 1. Interactive RSA Demonstration
+Run the script for manual entry of prime numbers and encryption of number $x$:
+```bash
+python RSA_simple.py
+```
+
+### 2. Key File Generation
+The script will generate keys of the specified bit length and save them to `user_pubkey.txt` and `user_privkey.txt`:
+```bash
+python makePublicPrivateKeys.py
+```
+
+### 3. Running Performance Benchmarks
+The script will run a series of tests for modulus $n$ sizes of 512, 1024, 2048, and 4096 bits and output average encryption/decryption times:
+```bash
+python RSA_testing.py
+```
+
+Example test output:
+```text
+Running tests (5 trials per key size)...
+n Bits     | Avg. Encrypt (s)   | Avg. Decrypt (s)   | Avg. Cycle (s) 
+---------------------------------------------------------------------------
+512        | 0.000013           | 0.000455           | 0.000468       
+1024       | 0.000033           | 0.002306           | 0.002340       
+2048       | 0.000117           | 0.016834           | 0.016951       
+4096       | 0.000419           | 0.119010           | 0.119428       
+```
